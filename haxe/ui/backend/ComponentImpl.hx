@@ -11,8 +11,10 @@ import haxe.ui.core.TextInput;
 import haxe.ui.events.KeyboardEvent;
 import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
+import haxe.ui.geom.Point;
 import haxe.ui.geom.Rectangle;
 import haxe.ui.styles.Style;
+import nme.display.DisplayObjectContainer;
 import nme.display.Sprite;
 import nme.events.Event;
 import nme.filters.DropShadowFilter;
@@ -204,6 +206,22 @@ class ComponentImpl extends ComponentBase {
         }
     }
 
+    private override function getComponentOffset():Point {
+        var p:DisplayObjectContainer = this;
+        var s:DisplayObjectContainer = null;
+        while (p != null) {
+            if (Std.is(p, ComponentImpl) == false) {
+                s = p;
+                break;
+            }
+            p = p.parent;
+        }
+        if (s == null)  {
+            return new Point(0, 0);
+        }
+        var globalPoint = s.localToGlobal(new openfl.geom.Point(0, 0));
+        return new Point(globalPoint.x, globalPoint.y);
+    }
     //***********************************************************************************************************
     // Events
     //***********************************************************************************************************

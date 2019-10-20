@@ -11,6 +11,8 @@ class TextInputImpl extends TextDisplayImpl {
 
         textField.addEventListener(Event.CHANGE, onChange);
         textField.addEventListener(Event.SCROLL, onScroll);
+        _inputData.vscrollPageStep = 1;
+        _inputData.vscrollNativeWheel = true;
     }
 
     private override function createTextField() {
@@ -95,9 +97,8 @@ class TextInputImpl extends TextDisplayImpl {
     }
     
     private function onScroll(e) {
-        return;
-        _inputData.hscrollPos = textField.scrollH;
-        _inputData.vscrollPos = textField.scrollV;
+        _inputData.hscrollPos = textField.scrollH - 1;
+        _inputData.vscrollPos = textField.scrollV - 1;
         
         if (_inputData.onScrollCallback != null) {
             _inputData.onScrollCallback();
